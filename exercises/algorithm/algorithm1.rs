@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -69,15 +69,46 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+    pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self
+    where
+        T: Ord + Clone,
+    {
+        let mut merged_list = LinkedList::new();
+        
+        // 遍历链表 A
+        let mut current = list_a.start;
+        while let Some(node_ptr) = current {
+            let node = unsafe { &*node_ptr.as_ptr() };
+            merged_list.add(node.val.clone());
+            current = node.next;
         }
-	}
+        
+        // 遍历链表 B
+        current = list_b.start;
+        while let Some(node_ptr) = current {
+            let node = unsafe { &*node_ptr.as_ptr() };
+            merged_list.add(node.val.clone());
+            current = node.next;
+        }
+        
+        // 排序 merged_list
+        let mut values = Vec::new();
+        current = merged_list.start;
+        while let Some(node_ptr) = current {
+            let node = unsafe { &*node_ptr.as_ptr() };
+            values.push(node.val.clone());
+            current = node.next;
+        }
+        
+        values.sort();
+        
+        let mut sorted_list = LinkedList::new();
+        for value in values {
+            sorted_list.add(value);
+        }
+        
+        sorted_list
+    }
 }
 
 impl<T> Display for LinkedList<T>
