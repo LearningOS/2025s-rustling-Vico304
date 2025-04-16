@@ -7,8 +7,7 @@
 #[allow(unused_variables, unused_assignments)]
 fn main() {
     let my_option: Option<()> = None;
-    if my_option.is_none() {
-    }
+
 
     let my_arr = &[
         -1, -2, -3,
